@@ -34,14 +34,17 @@ public class NGramMap {
         
         // Here we enter deeper forests...
 
-        // NGramMap is an interface that we'll define to 
+        // NGramMap is an interface that we'll define to help us create TimeSeries.
+        // Our interface needs to bundle the appearances of a given word within a time period.
+        // To create a time series, we'll need to reach this black box, find the relevant keyword,
+        // and store the bounds to be used in our TimeSeries. 
+        // What could this "black box" possibly be? Maybe a dictionary...
+        
+        // This is what our NGramMap will be... a hashmap that indexes the entire history of 
+        // language evolution based on any given word!
 
-        // What exactly are the functionalities of our interface? We need to...
-        // -  of a given word within a time period.
-        // - count the history of a given word
-
-        // Our methods should ideally create a TimeSeries for each word. This constructor
-        // should hold a dictionary storing the keys (words) and values (tuples of (year, appearances))
+        // So how do we do this? The first thought is to parse our words file, extract all unigrams
+        // and insert them into a hashmap. Our values will consist of 
         In in = new In(wordsFilename);
         int i = 0;
 
