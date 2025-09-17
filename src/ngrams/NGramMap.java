@@ -1,6 +1,7 @@
 package ngrams;
 
 import java.util.Collection;
+import edu.princeton.cs.algs4.In;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -17,13 +18,38 @@ import static ngrams.TimeSeries.MIN_YEAR;
  */
 public class NGramMap {
 
-    // TODO: Add any necessary static/instance variables.
+    private String[] WORDS;
+    
     
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
-        // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
+        // The crux of our work will be to parse through data files and store in a
+        // data structure. As we know, from our first incursion into this haunting and
+        // unfamiliar codebase, the TimeSeries are essentially wrappers around a 
+        // TreeMap structure, through which we can "bundle" a given word's 
+        // "history" (or more simply the list of its years) and any corresponding
+        // data for each year, e.g., occurrences of the word.
+        
+        // Here we enter deeper forests...
+
+        // NGramMap is an interface that we'll define to 
+
+        // What exactly are the functionalities of our interface? We need to...
+        // -  of a given word within a time period.
+        // - count the history of a given word
+
+        // Our methods should ideally create a TimeSeries for each word. This constructor
+        // should hold a dictionary storing the keys (words) and values (tuples of (year, appearances))
+        In in = new In(wordsFilename);
+        int i = 0;
+
+        // Retrieve words from words_file
+        while(!in.isEmpty()) {
+            String nextLine = in.readLine();
+            String[] splitLine = nextLine.split("\t");
+        }
     }
 
     /**
@@ -96,7 +122,4 @@ public class NGramMap {
         // TODO: Fill in this method.
         return null;
     }
-
-    // TODO: Add any private helper methods.
-    // TODO: Remove all TODO comments before submitting.
 }
