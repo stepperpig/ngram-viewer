@@ -83,10 +83,10 @@ public class TimeSeries extends TreeMap<Integer, Double> {
     public TimeSeries plus(TimeSeries ts) {
         TimeSeries sum = new TimeSeries();
 
+        if (this.years().isEmpty() && ts.years().isEmpty()) return sum;
+
         int startYear = Math.min(this.firstKey(), ts.firstKey());
         int endYear = Math.max(this.lastKey(), ts.lastKey());
-
-        if (this.years().isEmpty() && ts.years().isEmpty()) return sum;
 
         // loop through years
         for (int i = startYear; i <= endYear; i++) {
@@ -111,22 +111,6 @@ public class TimeSeries extends TreeMap<Integer, Double> {
             }
         }
 
-        /*
-        // loop through all years
-        for (int i = 0; i < this.years().size(); i++) {
-            // as long as all the years are equal...
-            if (!Objects.equals(this.years().get(i), ts.years().get(i))) {
-                // if we don't have a year
-                if (ts.years().contains(this.years().get(i))) {
-                    sum.put(ts.years().get(i), ts.data().get(i));
-                } else {
-                    sum.put(this.years().get(i), this.data().get(i));
-                }
-            } else {
-                sum.put(this.years().get(i), this.data().get(i) + ts.data().get(i));
-            }
-        }
-        */
         return sum;
     }
 
@@ -140,10 +124,27 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      * If TS has a year that is not in this TimeSeries, ignore it.
      */
     public TimeSeries dividedBy(TimeSeries ts) {
-        // TODO: Fill in this method.
-        return null;
-    }
+        TimeSeries quotient = new TimeSeries();
 
-    // TODO: Add any private helper methods.
-    // TODO: Remove all TODO comments before submitting.
+        if (this.years().isEmpty() && ts.years().isEmpty()) return quotient;
+
+        int startYear = Math.min(this.MIN_YEAR, ts.MIN_YEAR);
+        int endYear = Math.max(this.MAX_YEAR, ts.MAX_YEAR);
+
+        for (int i = startYear; i <= endYear; i++) {
+            if (this.get(i) == null) {
+                if (ts.get(i) != null) {
+                    continue;
+                }
+            } else {
+                if (ts.get(i) == null) {
+                    throw new IllegalArgumentException("Can't divide by a year that doesn't exist.");
+                } else {
+                    quotient.put(i, this.get(i) / ts.get(i));
+                }
+            }
+        }
+
+        return quotient;
+    }
 }
