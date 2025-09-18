@@ -132,7 +132,16 @@ public class NGramMap {
      * TimeSeries.
      */
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
-        return null;
+        TimeSeries ts = new TimeSeries();
+        TimeSeries ts2 = totalCountHistory();
+        if (MAP.get(word) == null) { 
+            return ts;
+        } else {
+            // get the TS for the word and divide by the TS for counts
+            ts = countHistory(word, startYear, endYear);
+            TimeSeries bounded_ts2 = new TimeSeries(ts2, startYear, endYear);
+            return ts.dividedBy(bounded_ts2);
+        }
     }
 
     /**
@@ -141,7 +150,14 @@ public class NGramMap {
      * TimeSeries.
      */
     public TimeSeries weightHistory(String word) {
-        return null;
+        TimeSeries ts = new TimeSeries();
+        TimeSeries ts2 = totalCountHistory();
+        if (MAP.get(word) == null) {
+            return ts;
+        } else {
+            ts = countHistory(word);
+            return ts.dividedBy(ts2);
+        }
     }
 
     /**
@@ -149,8 +165,7 @@ public class NGramMap {
      * ENDYEAR, inclusive of both ends. If a word does not exist in this time frame, ignore it
      * rather than throwing an exception.
      */
-    public TimeSeries summedWeightHistory(Collection<String> words,
-                                          int startYear, int endYear) {
+    public TimeSeries summedWeightHistory(Collection<String> words, int startYear, int endYear) {
         return null;
     }
 
