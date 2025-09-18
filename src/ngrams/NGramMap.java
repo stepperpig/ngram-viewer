@@ -21,7 +21,7 @@ import static ngrams.TimeSeries.MIN_YEAR;
 public class NGramMap {
 
     private Map<String, TimeSeries> MAP = new HashMap<>();
-    
+    private Map<Integer, Double> COUNTS = new HashMap<>();
     
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
@@ -71,6 +71,20 @@ public class NGramMap {
                 MAP.get(w).put(year, appearances);
             }
         }
+
+
+        // We'll also parse our counts into a separate hashmap.
+        In in2 = new In(countsFilename);
+        while(!in2.isEmpty()) {
+            String nextLine = in2.readLine();
+            String[] splitLine = nextLine.split(",");
+            int year = Integer.parseInt(splitLine[0]);
+            double total_count = Double.parseDouble(splitLine[1]);
+
+            if (COUNTS.get(year) == null) {
+                COUNTS.put(year, total_count);
+            }
+        }
     }
 
     /**
@@ -107,7 +121,9 @@ public class NGramMap {
      * Returns a defensive copy of the total number of words recorded per year in all volumes.
      */
     public TimeSeries totalCountHistory() {
-        return null;
+        TimeSeries ts = new TimeSeries();
+        COUNTS.forEach((key, value) -> ts.put(key, value));
+        return ts;
     }
 
     /**
