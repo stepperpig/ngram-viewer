@@ -167,7 +167,6 @@ public class NGramMap {
      * rather than throwing an exception.
      */
     public TimeSeries summedWeightHistory(Collection<String> words, int startYear, int endYear) {
-        ArrayList<TimeSeries> history = new ArrayList<>();
         TimeSeries sum = new TimeSeries();
         for (String word : words) {
             if (countHistory(word, startYear, endYear).isEmpty()) {
@@ -192,23 +191,22 @@ public class NGramMap {
      * exist in this time frame, ignore it rather than throwing an exception.
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
-        ArrayList<TimeSeries> history = new ArrayList<>();
+        TimeSeries sum = new TimeSeries();
         for (String word : words) {
             if (countHistory(word).isEmpty()) {
                 continue;
             }
-            TimeSeries ts = weightHistory(word);
-            history.add(ts);
+
+            if (sum.isEmpty()) {
+                sum = countHistory(word);
+            } else {
+                TimeSeries ts = countHistory(word);
+                sum = sum.plus(ts);
+            }
         }
 
-        TimeSeries summed = new TimeSeries();
-        for (TimeSeries t : history) {
-            if (summed.isEmpty()) {
-                summed = t;
-                continue;
-            }
-            summed.plus(t);
-        }
-        return summed;
+        TimeSeries total = totalCountHistory();
+
+        return sum.dividedBy(total);
     }
 }
