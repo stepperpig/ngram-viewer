@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class DummyHistoryHandler extends NgordnetQueryHandler {
     @Override
     public String handle(NgordnetQuery q) {
+        // store the words, start year, and end year.
         System.out.println("Got query that looks like:");
         System.out.println("Words: " + q.words());
         System.out.println("Start Year: " + q.startYear());
@@ -21,6 +22,8 @@ public class DummyHistoryHandler extends NgordnetQueryHandler {
                         "and a sine wave, because your job will be to figure out how to\n" +
                         "actually use the query data.");
 
+        // create a TimeSeries for each unigram, populating its history
+        // between our specified year boundaries.
         TimeSeries parabola = new TimeSeries();
         for (int i = 1400; i < 1500; i += 1) {
             parabola.put(i, (i - 50.0) * (i - 50.0) + 3);
