@@ -4,6 +4,7 @@ import java.util.Collection;
 import edu.princeton.cs.algs4.In;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -166,7 +167,24 @@ public class NGramMap {
      * rather than throwing an exception.
      */
     public TimeSeries summedWeightHistory(Collection<String> words, int startYear, int endYear) {
-        return null;
+        ArrayList<TimeSeries> history = new ArrayList<>();
+        TimeSeries sum = new TimeSeries();
+        for (String word : words) {
+            if (countHistory(word, startYear, endYear).isEmpty()) {
+                continue;
+            }
+
+            if (sum.isEmpty()) {
+                sum = countHistory(word, startYear, endYear);
+            } else {
+                TimeSeries ts = countHistory(word, startYear, endYear);
+                sum = sum.plus(ts);
+            }
+        }
+
+        TimeSeries total = new TimeSeries(totalCountHistory(), startYear, endYear);
+
+        return sum.dividedBy(total);
     }
 
     /**
@@ -174,6 +192,23 @@ public class NGramMap {
      * exist in this time frame, ignore it rather than throwing an exception.
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
-        return null;
+        ArrayList<TimeSeries> history = new ArrayList<>();
+        for (String word : words) {
+            if (countHistory(word).isEmpty()) {
+                continue;
+            }
+            TimeSeries ts = weightHistory(word);
+            history.add(ts);
+        }
+
+        TimeSeries summed = new TimeSeries();
+        for (TimeSeries t : history) {
+            if (summed.isEmpty()) {
+                summed = t;
+                continue;
+            }
+            summed.plus(t);
+        }
+        return summed;
     }
 }
