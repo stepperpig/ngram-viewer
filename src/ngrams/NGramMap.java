@@ -81,7 +81,12 @@ public class NGramMap {
      * returns an empty TimeSeries.
      */
     public TimeSeries countHistory(String word, int startYear, int endYear) {
-        return null;
+        // retrieve ts
+        TimeSeries ts = new TimeSeries();
+        if (MAP.get(word) == null) return ts;
+        ts = MAP.get(word);
+        TimeSeries bounded_ts = new TimeSeries(ts, startYear, endYear);
+        return bounded_ts;
     }
 
     /**
@@ -92,7 +97,9 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word) {
         // retrieve dictionary based on word
-        TimeSeries ts = MAP.get(word);
+        TimeSeries ts = new TimeSeries();
+        if (MAP.get(word) == null) return ts;
+        ts = MAP.get(word);
         return ts;
     }
 
