@@ -2,6 +2,8 @@ package ngrams;
 
 import java.util.Collection;
 import edu.princeton.cs.algs4.In;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -18,7 +20,7 @@ import static ngrams.TimeSeries.MIN_YEAR;
  */
 public class NGramMap {
 
-    private String[] WORDS;
+    private Map<String, TimeSeries> MAP = new HashMap<>();
     
     
     /**
@@ -44,14 +46,30 @@ public class NGramMap {
         // language evolution based on any given word!
 
         // So how do we do this? The first thought is to parse our words file, extract all unigrams
-        // and insert them into a hashmap. Our values will consist of 
+        // and insert them into a hashmap. Our values will consist of tuples storing both the year
+        // and appearances.
+
+        // On second thought, this latter tuple looks a lot like a TimeSeries!
+        // We could modify our conceptual hashmap to hold words as keys and TimeSeries
+        // as values. 
         In in = new In(wordsFilename);
-        int i = 0;
 
         // Retrieve words from words_file
         while(!in.isEmpty()) {
             String nextLine = in.readLine();
             String[] splitLine = nextLine.split("\t");
+            String w = splitLine[0];
+            int year = Integer.parseInt(splitLine[1]);
+            double appearances = Double.parseDouble(splitLine[2]);
+
+            // if the dictionary is empty
+            if (MAP.get(w) == null) {
+                TimeSeries ts = new TimeSeries();
+                ts.put(year, appearances);
+                MAP.put(w, ts);
+            } else {
+                MAP.get(w).put(year, appearances);
+            }
         }
     }
 
@@ -63,7 +81,6 @@ public class NGramMap {
      * returns an empty TimeSeries.
      */
     public TimeSeries countHistory(String word, int startYear, int endYear) {
-        // TODO: Fill in this method.
         return null;
     }
 
@@ -74,15 +91,15 @@ public class NGramMap {
      * is not in the data files, returns an empty TimeSeries.
      */
     public TimeSeries countHistory(String word) {
-        // TODO: Fill in this method.
-        return null;
+        // retrieve dictionary based on word
+        TimeSeries ts = MAP.get(word);
+        return ts;
     }
 
     /**
      * Returns a defensive copy of the total number of words recorded per year in all volumes.
      */
     public TimeSeries totalCountHistory() {
-        // TODO: Fill in this method.
         return null;
     }
 
@@ -92,7 +109,6 @@ public class NGramMap {
      * TimeSeries.
      */
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
-        // TODO: Fill in this method.
         return null;
     }
 
@@ -102,7 +118,6 @@ public class NGramMap {
      * TimeSeries.
      */
     public TimeSeries weightHistory(String word) {
-        // TODO: Fill in this method.
         return null;
     }
 
@@ -113,7 +128,6 @@ public class NGramMap {
      */
     public TimeSeries summedWeightHistory(Collection<String> words,
                                           int startYear, int endYear) {
-        // TODO: Fill in this method.
         return null;
     }
 
@@ -122,7 +136,6 @@ public class NGramMap {
      * exist in this time frame, ignore it rather than throwing an exception.
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
-        // TODO: Fill in this method.
         return null;
     }
 }
